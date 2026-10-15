@@ -1,0 +1,1006 @@
+{
+  "version": "spandan-tools-v1",
+  "sha256": "d89640cd80c2f82c8c990f8c13766b08a62250150e5c57ad1c84319105190955",
+  "tools": [
+    {
+      "name": "help",
+      "description": "Find English help about using Spandan. No clinical advice.",
+      "roles": [
+        "patient",
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string",
+            "maxLength": 200
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "search_doctors",
+      "description": "Search approved public doctors. Use exact returned IDs in later tools.",
+      "roles": [
+        "patient",
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000
+          },
+          "query": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "district": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "specialization_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          },
+          "max_fee": {
+            "type": "number",
+            "minimum": 0
+          },
+          "available_on": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "date"
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "list_specialties",
+      "description": "List active specialties and their identifiers.",
+      "roles": [
+        "patient",
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "doctor_details",
+      "description": "Get a public doctor profile; hospital-sourced information is not confirmed availability.",
+      "roles": [
+        "patient",
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "doctor_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "doctor_id"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "list_chambers",
+      "description": "List a doctor's active chambers and fees. Staff may omit doctor_id for own assigned chambers.",
+      "roles": [
+        "patient",
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000
+          },
+          "doctor_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "list_sessions",
+      "description": "List upcoming sessions. Patients must specify doctor_id. Staff can list assigned sessions.",
+      "roles": [
+        "patient",
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000
+          },
+          "doctor_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          },
+          "from_date": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "date"
+          },
+          "on_date": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "date"
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "list_appointments",
+      "description": "List own appointments or a staff member's authorized roster. No clinical notes.",
+      "roles": [
+        "patient",
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000
+          },
+          "schedule_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "appointment_details",
+      "description": "Get one authorized appointment with session, queue and payment information.",
+      "roles": [
+        "patient",
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "appointment_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "appointment_id"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "queue_status",
+      "description": "Get queue position for a patient's own appointment, or an authorized staff session.",
+      "roles": [
+        "patient",
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "schedule_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          },
+          "appointment_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "schedule_id"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "list_payments",
+      "description": "List authorized appointment payment summaries.",
+      "roles": [
+        "patient",
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "payment_details",
+      "description": "Get payment status and fee for one authorized appointment.",
+      "roles": [
+        "patient",
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "appointment_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "appointment_id"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "receipt",
+      "description": "Get a paid or refunded appointment's receipt.",
+      "roles": [
+        "patient",
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "payment_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "payment_id"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "list_dependents",
+      "description": "List existing dependents belonging to this patient, without medical or birth-date fields.",
+      "roles": [
+        "patient"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "list_waitlist",
+      "description": "List this patient's current waitlist entries.",
+      "roles": [
+        "patient"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "list_assistant_assignments",
+      "description": "List assistant permissions owned by the doctor or visible to an administrator.",
+      "roles": [
+        "doctor",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "admin_users",
+      "description": "Search account status for administration. No medical profiles or security secrets.",
+      "roles": [
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000
+          },
+          "query": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "is_active": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "admin_doctors",
+      "description": "Search doctor moderation status.",
+      "roles": [
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000
+          },
+          "query": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "status": {
+            "type": "string",
+            "maxLength": 200,
+            "enum": [
+              "pending",
+              "approved",
+              "rejected",
+              "suspended"
+            ]
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "admin_summary",
+      "description": "Get aggregate operational counts. No transcripts or patient charts.",
+      "roles": [
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "propose_book_appointment",
+      "description": "Prepare a booking for this patient or an existing dependent. Does not reserve a place or execute a booking.",
+      "roles": [
+        "patient"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "schedule_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          },
+          "dependent_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "schedule_id"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "propose_appointment_status",
+      "description": "Prepare a status change. Patients can confirm or cancel their own appointment only.",
+      "roles": [
+        "patient",
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "appointment_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "maxLength": 200,
+            "enum": [
+              "confirmed",
+              "cancelled",
+              "checked_in",
+              "waiting",
+              "in_consultation",
+              "completed",
+              "skipped",
+              "absent"
+            ]
+          }
+        },
+        "required": [
+          "appointment_id",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "propose_reschedule",
+      "description": "Prepare moving an appointment to another session with the same doctor.",
+      "roles": [
+        "patient",
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "appointment_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          },
+          "schedule_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "appointment_id",
+          "schedule_id"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "propose_join_waitlist",
+      "description": "Prepare joining a session's cancellation waitlist.",
+      "roles": [
+        "patient"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "schedule_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "schedule_id"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "propose_leave_waitlist",
+      "description": "Prepare leaving an existing waitlist entry.",
+      "roles": [
+        "patient"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "entry_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "entry_id"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "propose_checkout",
+      "description": "Prepare opening secure Stripe Checkout for the patient's own appointment. Never collect card details.",
+      "roles": [
+        "patient"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "appointment_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "appointment_id"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "propose_cancel_checkout",
+      "description": "Prepare cancelling a pending Stripe checkout.",
+      "roles": [
+        "patient",
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "payment_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "payment_id"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "propose_create_session",
+      "description": "Prepare a single session at an existing authorized chamber. Times are Asia/Dhaka local time.",
+      "roles": [
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "chamber_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          },
+          "schedule_date": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "date"
+          },
+          "start_time": {
+            "type": "string",
+            "maxLength": 200,
+            "pattern": "^\\d{2}:\\d{2}(:\\d{2})?$"
+          },
+          "end_time": {
+            "type": "string",
+            "maxLength": 200,
+            "pattern": "^\\d{2}:\\d{2}(:\\d{2})?$"
+          },
+          "maximum_patients": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          },
+          "average_consultation_minutes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 240
+          }
+        },
+        "required": [
+          "chamber_id",
+          "schedule_date",
+          "start_time",
+          "end_time",
+          "maximum_patients"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "propose_update_session",
+      "description": "Prepare a session change, showing affected bookings. Cancelled or completed sessions cannot be reopened.",
+      "roles": [
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "schedule_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          },
+          "changes": {
+            "type": "object",
+            "properties": {
+              "start_time": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "end_time": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "maximum_patients": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000
+              },
+              "average_consultation_minutes": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 240
+              },
+              "status": {
+                "type": "string",
+                "maxLength": 200,
+                "enum": [
+                  "draft",
+                  "open",
+                  "full",
+                  "closed",
+                  "completed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "schedule_id",
+          "changes"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "propose_advance_queue",
+      "description": "Prepare calling the next waiting patient and completing any current consultation.",
+      "roles": [
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "schedule_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "schedule_id"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "propose_queue_delay",
+      "description": "Prepare changing a session's delay estimate in minutes.",
+      "roles": [
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "schedule_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          },
+          "delay_minutes": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1440
+          }
+        },
+        "required": [
+          "schedule_id",
+          "delay_minutes"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    },
+    {
+      "name": "propose_cash_payment",
+      "description": "Prepare recording cash already received at the chamber. Requires fresh authentication.",
+      "roles": [
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "appointment_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "appointment_id"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": true
+    },
+    {
+      "name": "propose_refund",
+      "description": "Prepare a full refund of a paid, cancelled appointment. Cash recording does not physically return money. Requires fresh authentication.",
+      "roles": [
+        "doctor",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "payment_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "payment_id"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": true
+    },
+    {
+      "name": "propose_assistant_permissions",
+      "description": "Prepare changes to an existing owned assignment. Assistants cannot change permissions. Requires fresh authentication.",
+      "roles": [
+        "doctor",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "assignment_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          },
+          "is_active": {
+            "type": "boolean"
+          },
+          "can_manage_schedules": {
+            "type": "boolean"
+          },
+          "can_manage_appointments": {
+            "type": "boolean"
+          },
+          "can_update_queue": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "assignment_id",
+          "is_active",
+          "can_manage_schedules",
+          "can_manage_appointments",
+          "can_update_queue"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": true
+    },
+    {
+      "name": "propose_user_status",
+      "description": "Prepare account activation/deactivation. Administrator accounts cannot be deactivated. Requires fresh authentication.",
+      "roles": [
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          },
+          "is_active": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "user_id",
+          "is_active"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": true
+    },
+    {
+      "name": "propose_doctor_verification",
+      "description": "Prepare doctor approval, rejection or suspension. Requires fresh authentication.",
+      "roles": [
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "doctor_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "maxLength": 200,
+            "enum": [
+              "approved",
+              "rejected",
+              "suspended"
+            ]
+          }
+        },
+        "required": [
+          "doctor_id",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": true
+    },
+    {
+      "name": "execute_confirmed_action",
+      "description": "Internal execution handler. Requires an exact-action delegated grant issued after the confirmation button. Never expose to the model.",
+      "roles": [
+        "patient",
+        "doctor",
+        "assistant",
+        "administrator"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "maxLength": 200,
+            "format": "uuid"
+          }
+        },
+        "required": [
+          "action_id"
+        ],
+        "additionalProperties": false
+      },
+      "sensitive": false
+    }
+  ]
+}
